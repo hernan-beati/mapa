@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GEO</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    }
+
+    // onSuccess Geolocation
+    //
+    function onSuccess(position) {
+        var element = document.getElementById('geolocation');
+        element.innerHTML = 'Latitud: '           + position.coords.latitude              + '<br />' +
+                            'Longitud: '          + position.coords.longitude             + '<br />' +
+                            'Altitud: '           + position.coords.altitude              + '<br />' +
+                            'Precisión: '           + position.coords.accuracy              + '<br />' +
+                            'Precisión en Altitud: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Rumbo: '            + position.coords.heading               + '<br />' +
+                            'Velocidad: '              + position.coords.speed                 + '<br />' +
+                            'Fecha y hora: '          + position.timestamp                    + '<br />';
+    }
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('codigo de error: '    + error.code    + '\n' +
+              'mensaje: ' + error.message + '\n');
+    }
+
+    </script>
+<script type="text/javascript"
+    src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script>
+      <script type="text/javascript">
+
+var map
+var marcador
+
+  function initialize() {
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var myOptions = {
+      zoom: 8,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      zoomControl: true
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+		
+		
+    marcador = new google.maps.Marker( {
+		position: latlng,
+		map:map	
+	})
+  }
+  
+  function mostrarUbicacion(){
+		navigator.geolocation.getCurrentPosition( lecturaGPS , errorGPS , {enableHighAccuracy:true} )  
+  }
+  
+  function lecturaGPS(ubicacion){
+	  
+	  var miubicacion = new google.maps.LatLng(ubicacion.coords.latitude, ubicacion.coords.longitude);
+	  
+	  map.setCenter(miubicacion)
+	  marcador.setPosition(miubicacion)
+	  
+  }
+  
+  function errorGPS(){
+	  alerta(" no puedo encontrarte :(")
+  }
+  
+
+</script>
+
+  </head>
+  <body onload="initialize()">
+    <p id="geolocation">Buscando ubicación...</p>
+      <div id="map_canvas" style="width:100%; height:90%"></div>
+  
+   <button onClick="mostrarUbicacion()"> mostrar mi ubicacion </button>
+  </body>
+</html>
