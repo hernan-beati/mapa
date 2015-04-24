@@ -1,94 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GEO</title>
-
-    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" charset="utf-8">
-
-    // Wait for device API libraries to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    // device APIs are available
-    //
-    function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    }
-
-    // onSuccess Geolocation
-    //
-    function onSuccess(position) {
-        var element = document.getElementById('geolocation');
-        element.innerHTML = 'Latitud: '           + position.coords.latitude              + '<br />' +
-                            'Longitud: '          + position.coords.longitude             + '<br />' +
-                            'Altitud: '           + position.coords.altitude              + '<br />' +
-                            'Precisión: '           + position.coords.accuracy              + '<br />' +
-                            'Precisión en Altitud: '  + position.coords.altitudeAccuracy      + '<br />' +
-                            'Rumbo: '            + position.coords.heading               + '<br />' +
-                            'Velocidad: '              + position.coords.speed                 + '<br />' +
-                            'Fecha y hora: '          + position.timestamp                    + '<br />';
-    }
-
-    // onError Callback receives a PositionError object
-    //
-    function onError(error) {
-        alert('codigo de error: '    + error.code    + '\n' +
-              'mensaje: ' + error.message + '\n');
-    }
-
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDFuZIpAHHmrjgPM4gL2RYra1IYHBgCod0&sensor=true">
     </script>
-<script type="text/javascript"
-    src="http://maps.googleapis.com/maps/api/js?sensor=false">
-</script>
-      <script type="text/javascript">
-
-var map
-var marcador
-
-  function initialize() {
-    var latlng = new google.maps.LatLng(-34.397, 150.644);
-    var myOptions = {
-      zoom: 8,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      zoomControl: true
-    };
-    map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);
-		
-		
-    marcador = new google.maps.Marker( {
-		position: latlng,
-		map:map	
-	})
-  }
-  
-  function mostrarUbicacion(){
-		navigator.geolocation.getCurrentPosition( lecturaGPS , errorGPS , {enableHighAccuracy:true} )  
-  }
-  
-  function lecturaGPS(ubicacion){
-	  
-	  var miubicacion = new google.maps.LatLng(ubicacion.coords.latitude, ubicacion.coords.longitude);
-	  
-	  map.setCenter(miubicacion)
-	  marcador.setPosition(miubicacion)
-	  
-  }
-  
-  function errorGPS(){
-	  alerta(" no puedo encontrarte :(")
-  }
-  
-
-</script>
-
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+      }
+    </script>
   </head>
   <body onload="initialize()">
-    <p id="geolocation">Buscando ubicación...</p>
-      <div id="map_canvas" style="width:100%; height:90%"></div>
-  
-   <button onClick="mostrarUbicacion()"> mostrar mi ubicacion </button>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
   </body>
 </html>
